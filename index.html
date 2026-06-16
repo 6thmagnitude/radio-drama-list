@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>簡中百廣清單</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --border: #e8e4dc;
+    --border-hover: #c8c0b0;
+    --text: #1a1714;
+    --text-2: #6b6560;
+    --text-3: #9e9892;
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --purple-mid: #AFA9EC;
+    --teal: #0F6E56;
+    --teal-light: #E1F5EE;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --coral: #993C1D;
+    --coral-light: #FAECE7;
+    --gray-light: #F1EFE8;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  body {
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  /* ── Header ── */
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .site-title { font-size: 18px; font-weight: 600; letter-spacing: 0.02em; }
+  .site-title span { color: var(--purple); }
+  /* ── Search ── */
+  .search-wrap { position: relative; flex: 1; max-width: 320px; }
+  .search-wrap input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-wrap input:focus { border-color: var(--purple-mid); }
+  .search-wrap .icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text-3); font-size: 15px; pointer-events: none;
+  }
+  /* ── Tabs ── */
+  .tab-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; gap: 0; overflow-x: auto; padding: 0 2rem;
+  }
+  .tab-btn {
+    padding: 12px 20px;
+    font-size: 14px; font-weight: 500;
+    color: var(--text-2);
+    border: none; background: none; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--purple); border-bottom-color: var(--purple); }
+  .tab-count {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    margin-left: 5px;
+  }
+  /* ── Toolbar (filter row) ── */
+  .toolbar {
+    max-width: 1200px; margin: 0 auto;
+    padding: 1rem 2rem 0;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn {
+    font-size: 12px; padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .filter-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  .result-count { font-size: 13px; color: var(--text-3); white-space: nowrap; }
+  /* ── Grid ── */
+  .grid-wrap { max-width: 1200px; margin: 0 auto; padding: 1.25rem 2rem 3rem; }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s, transform 0.15s;
+    cursor: default;
+  }
+  .card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .card-img {
+    width: 100%; aspect-ratio: 3/4;
+    background: var(--gray-light);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .card-img img[src=""],
+  .card-img img:not([src]) { display: none; }
+  .card-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--text-3); font-size: 12px;
+  }
+  .card-placeholder .mic { font-size: 28px; opacity: 0.3; }
+  .era-badge {
+    position: absolute; top: 8px; left: 8px;
+    font-size: 11px; padding: 3px 8px; border-radius: 999px;
+    color: #fff; font-weight: 500;
+  }
+  .status-badge {
+    position: absolute; top: 8px; right: 8px;
+    font-size: 10px; padding: 3px 7px; border-radius: 999px;
+    font-weight: 600;
+  }
+  .status-complete { background: rgba(15,110,86,0.85); color: #fff; }
+  .status-ongoing { background: rgba(186,117,23,0.85); color: #fff; }
+  .status-hiatus { background: rgba(100,100,100,0.75); color: #fff; }
+  .card-body { padding: 11px 13px 13px; }
+  .card-title {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    line-height: 1.4; margin-bottom: 4px;
+  }
+  .card-sub { font-size: 12px; color: var(--text-2); margin-bottom: 6px; line-height: 1.5; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+  .tag {
+    font-size: 11px; padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+  }
+  .tag-platform { background: var(--purple-light); color: var(--purple); border-color: var(--purple-mid); }
+  .tag-genre { background: var(--teal-light); color: var(--teal); border-color: #9FE1CB; }
+  .stars { font-size: 13px; color: var(--amber); letter-spacing: 1px; margin-bottom: 4px; }
+  .cv-row { font-size: 11px; color: var(--text-3); margin-bottom: 4px; }
+  .memo-preview {
+    font-size: 11px; color: var(--text-2); line-height: 1.6;
+    border-top: 1px solid var(--border); padding-top: 6px; margin-top: 4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .memo-hint {
+    display: inline-flex; align-items: center; gap: 3px;
+    margin-top: 6px;
+    font-size: 11px; color: var(--purple);
+    border-top: 1px solid var(--border); padding-top: 6px; width: 100%;
+  }
+  /* ── Empty ── */
+  .empty { text-align: center; padding: 4rem 1rem; color: var(--text-3); }
+  .empty p { font-size: 15px; }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 200;
+    align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    max-width: 540px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 12px; right: 12px;
+    background: none; border: none; font-size: 20px;
+    color: var(--text-2); cursor: pointer; padding: 4px;
+  }
+  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .modal-meta { font-size: 13px; color: var(--text-2); margin-bottom: 12px; }
+  .modal-section { font-size: 13px; margin-bottom: 8px; line-height: 1.7; }
+  .modal-section strong { color: var(--text-3); font-weight: 500; display: block; font-size: 11px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .modal-stars { font-size: 18px; color: var(--amber); margin-bottom: 10px; }
+  .modal-memo { font-size: 13px; color: var(--text-2); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title">🎙 <span>百廣</span>清單</div>
+    <div class="search-wrap">
+      <span class="icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜尋劇名、CV…" oninput="onSearch()">
+    </div>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner" id="tabNav"></div>
+</nav>
+
+<div class="toolbar">
+  <div class="filter-row" id="filterRow"></div>
+  <div class="result-count" id="resultCount"></div>
+</div>
+
+<div class="grid-wrap">
+  <div class="card-grid" id="cardGrid"></div>
+  <div class="empty" id="emptyMsg" style="display:none"><p>找不到符合的劇 🎧</p></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+
+// 網配劇(完結)
+const complete = [
+  { title:'天使經過的人生', year:'2018', ep:'上下期', era:'現代', type:'原創', genre:'寫實', cv:'L句號、雷音', platform:'B站', memo:'聽完好悵然。人物設定跟故事太真實了，看到了她們的目前勉強，感觸的是人生百態。主角也像是身邊的朋友，是目前聽過最寫實的一部劇了。' },
+  { title:'重逢', year:'2018–2022', ep:'共四期', era:'現代', type:'小說改編', genre:'虐戀', cv:'L句號、牧野冥姬、韶小韶、祈雨熙', platform:'貓耳、飯角', memo:'像是批著GL皮的BG劇，劇組給了別於原著的結局。' },
+  { title:'大山裡的日子', year:'2019–2022', ep:'上中下', era:'現代', type:'原創', genre:'鄉村縣城', cv:'季子櫻、L句號', platform:'荔枝', memo:'偏鄉議題、重逢、不解紀的刺怎沒的。' },
+  { title:'電梯林小姐', year:'2020', ep:'全一期', era:'現代', type:'小說改編', genre:'靈異鬼怪', cv:'L句號、楓刹若舞', platform:'貓耳', memo:'' },
+  { title:'玉魄', year:'2020', ep:'全一期', era:'古代', type:'小說改編', genre:'仙俠', cv:'L句號、亦之紫F', platform:'貓耳', memo:'日日在夢裡跟玉相會的故事相當有意思。感情戲那段BGM若不是鋼琴樂就更好了。' },
+  { title:'那一場柑橘味的愛戀', year:'2021', ep:'上下期', era:'架空', type:'原創', genre:'ABO', cv:'十四君、L句號', platform:'漫播、飯角', memo:'' },
+  { title:'向陽花木易逢春', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'靈異鬼怪', cv:'子楚、L句號', platform:'貓耳', memo:'非百合，也是有趣的故事，還有子楚哭唧唧。' },
+  { title:'靜夜思', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'雷音、沙夏、L句號', platform:'漫播', memo:'前世今生。' },
+  { title:'突然好想你', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'校園', cv:'L句號、趙小爽', platform:'飯角、聽姬', memo:'青春回憶、刀。' },
+  { title:'田丹回憶錄', year:'2022', ep:'上中下', era:'民國', type:'小說改編', genre:'虐戀', cv:'L句號、季子櫻', platform:'聽姬', memo:'BE、覺得太委屈了沒有等到正義。' },
+  { title:'跪求謝甲歸田', year:'2017', ep:'共三期', era:'古代', type:'小說改編', genre:'古代', cv:'L句號、白鴉此去', platform:'B站', memo:'' },
+  { title:'青果', year:'2016', ep:'上下期', era:'現代', type:'小說改編', genre:'骨科', cv:'雷音、蘇流西、L句號', platform:'漫播', memo:'' },
+  { title:'認識你我簡直是倒了八輩子的霉', year:'2011', ep:'共兩期', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'餘音、L句號', platform:'飯角', memo:'' },
+];
+
+// 網配劇(連載中)
+const ongoing = [
+  { title:'不如來碗孟婆湯', year:'2016', ep:'ep6', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'阮月清馨、白鴉此去', platform:'貓耳、荔枝', memo:'年更' },
+  { title:'嗨，檢察官大人', year:'2017', ep:'ep7', era:'現代', type:'小說改編', genre:'都市', cv:'L句號、風鏡', platform:'貓耳', memo:'如看過原著，會覺得廣播劇索然無味，謝謝士大夫填坑' },
+  { title:'有件事想告訴你', year:'2017', ep:'ep3', era:'現代', type:'小說改編', genre:'都市', cv:'L句號、贇珩', platform:'貓耳', memo:'雙年更(?' },
+  { title:'其實我很純潔', year:'2018', ep:'ep6', era:'現代', type:'小說改編', genre:'都市', cv:'白子鈺、韶小韶', platform:'貓耳', memo:'' },
+  { title:'重生之小姨養成記', year:'2018', ep:'ep2', era:'現代', type:'小說改編', genre:'都市', cv:'L句號、亦之紫F', platform:'荔枝、貓耳', memo:'' },
+  { title:'無可奉告', year:'2018', ep:'ep7', era:'現代', type:'小說改編', genre:'刑偵劇', cv:'杜冥鴉、黑芝燒', platform:'貓耳、B站', memo:'無8等的到嗎' },
+  { title:'女朋友', year:'2019', ep:'ep7', era:'現代', type:'原創', genre:'都市', cv:'贇珩、葉飄香砌', platform:'貓耳、漫播', memo:'' },
+  { title:'原來只是狐狸精', year:'2019', ep:'ep4', era:'現代', type:'小說改編', genre:'都市', cv:'秋不知、未樓', platform:'貓耳、荔枝', memo:'' },
+  { title:'山裡來的富二代', year:'2019', ep:'ep2', era:'現代', type:'小說改編', genre:'都市', cv:'季子櫻、L句號', platform:'貓耳、聽姬', memo:'' },
+  { title:'Miss(小姐)', year:'2019', ep:'ep1', era:'現代', type:'小說改編', genre:'都市', cv:'子楚、師欣', platform:'B站', memo:'預計三期完結' },
+  { title:'執筆畫心歌彼此生', year:'2019', ep:'ep2', era:'古代', type:'小說改編', genre:'都市', cv:'贇珩、蘇流西', platform:'貓耳', memo:'' },
+  { title:'幽蘭泣', year:'2019', ep:'ep2', era:'古代', type:'原創', genre:'古代', cv:'白鴉此去、KOKO殿', platform:'貓耳', memo:'ep1-2[22/6/23]高粱族長跟一小女子的故事，為koko殿我能繼續聽下去' },
+  { title:'週末情人竟是我的頂頭上司', year:'2019', ep:'ep3', era:'現代', type:'小說改編', genre:'都市', cv:'亦之紫F、薄涼', platform:'貓耳', memo:'' },
+  { title:'三尺', year:'2020', ep:'ep5', era:'現代', type:'小說改編', genre:'校園', cv:'雷音、羽人圭', platform:'貓耳', memo:'師生題材，但撐不下去老師人設雷到我' },
+  { title:'五道口愛情故事', year:'2020', ep:'ep2', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'杜冥鴉、十四君、沈羽夜', platform:'貓耳、飯角', memo:'ep1-2[22/6/5]' },
+  { title:'心機婊與綠茶婊的互寵日常', year:'2020', ep:'ep2', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'鳳城、清鳶', platform:'貓耳', memo:'' },
+  { title:'斑斕', year:'2020', ep:'ep13', era:'現代', type:'小說改編', genre:'都市', cv:'天雷無妄等', platform:'貓耳、荔枝、漫播', memo:'stand by me 缺網盤' },
+  { title:'瘦盡燈花又一宵', year:'2020', ep:'ep2', era:'架空', type:'小說改編', genre:'穿越', cv:'亦之紫F、季子櫻', platform:'漫播', memo:'我cp變成母女了；阿紫奶音可愛' },
+  { title:'歸途', year:'2020', ep:'ep2', era:'現代', type:'原創', genre:'都市', cv:'金喵兒、白鴉此去', platform:'貓耳', memo:'ep1-2[22/6/6]' },
+  { title:'河上春', year:'2020', ep:'ep4', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'浮夢若薇、牧野冥姬', platform:'貓耳、飯角', memo:'拔牙哭哭嗚嗚嗚' },
+  { title:'茶鈴', year:'2020', ep:'ep3下', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'季子櫻、扶三蘇', platform:'貓耳', memo:'米鬧鬧' },
+  { title:'急診科', year:'2021', ep:'ep1', era:'現代', type:'小說改編', genre:'醫學', cv:'薄涼、兔原', platform:'漫播', memo:'要講的很多，醫學、玄學、犯罪' },
+  { title:'穿到反派入魔前', year:'2021', ep:'ep1', era:'古代', type:'小說改編', genre:'仙俠', cv:'贇珩、夢辭汐', platform:'貓耳', memo:'' },
+  { title:'蟲二', year:'2021', ep:'明月卷：上下期', era:'現代', type:'小說改編', genre:'快穿', cv:'牧野冥姬、白鴉此去', platform:'貓耳、荔枝、飯角', memo:'' },
+  { title:'誓死不做戀人', year:'2021', ep:'ep4', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'乘之、AHKE', platform:'漫播', memo:'ep1-3[22/6/10]' },
+  { title:'一世清歡現代篇', year:'2021', ep:'ep3', era:'古代', type:'小說改編', genre:'古代', cv:'風鏡、蘇流西', platform:'飯角', memo:'番外篇讓人多愁善感，正篇99世是甜的了吧' },
+  { title:'助理不簡單', year:'2022', ep:'ep4', era:'現代', type:'原創', genre:'職場', cv:'落子成玉、牧野冥姬', platform:'漫播', memo:'' },
+  { title:'賤犬', year:'2022', ep:'ep5', era:'古代', type:'小說改編', genre:'ABO', cv:'薄涼、乘之', platform:'飯角', memo:'ep1古風abo色色有趣' },
+  { title:'與爾長安', year:'2022', ep:'ep1', era:'現代', type:'小說改編', genre:'都市', cv:'朝歌、清鳶', platform:'貓耳、荔枝、飯角', memo:'ep1[22/6/9]' },
+  { title:'女捕(有聲書)', year:'2022', ep:'ep12', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'十四君、落子成玉', platform:'啾咪FM、飯角', memo:'' },
+  { title:'刺客桃不換', year:'2022', ep:'ep6上', era:'古代', type:'小說改編', genre:'懸疑推理', cv:'薄涼、寒曉', platform:'飯角', memo:'ep2血嬰下[22/4/20]' },
+  { title:'戀愛遊戲', year:'2022', ep:'上期', era:'現代', type:'原創', genre:'都市', cv:'黑芝燒、雷音', platform:'飯角', memo:'餅嚇到我了' },
+  { title:'窒息', year:'2022', ep:'ep1', era:'現代', type:'小說改編', genre:'犯罪', cv:'黑芝燒、催音乖', platform:'飯角', memo:'太扭曲了' },
+  { title:'為犬', year:'2022', ep:'ep1', era:'古代', type:'小說改編', genre:'古代', cv:'季子櫻、催音乖', platform:'飯角', memo:'' },
+  { title:'枷鎖', year:'2022', ep:'ep1', era:'現代', type:'小說改編', genre:'都市', cv:'贇珩、林簌', platform:'貓耳', memo:'' },
+  { title:'是你媽的愛情', year:'2022', ep:'上期', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'穆雪婷、宋艾', platform:'飯角、貓耳、B站', memo:'' },
+  { title:'革命之路', year:'2022', ep:'ep2', era:'現代', type:'小說改編', genre:'都市', cv:'白鴉此去、雲鶴追、張小豆', platform:'啾咪FM、貓耳、飯角', memo:'什麼修羅場，bgm很粗暴' },
+];
+
+// 商劇 (截取部分重要的)
+const commercial = [
+  { title:'時差十四年', year:'2025-', ep:'共兩季', era:'現代', type:'小說改編', genre:'穿越', cv:'陶典、亦之紫F', platform:'飯角', stars:4, memo:'', status:'連載中' },
+  { title:'夏陽', year:'2025', ep:'全一期', era:'現代', type:'原創劇', genre:'鄉村縣城', cv:'紙巾、蘇流西', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'冒犯', year:'2025', ep:'全一期', era:'現代', type:'小說改編', genre:'鄉村縣城', cv:'天雷無妄、夢辭汐', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'她和她的金絲雀', year:'2025', ep:'全一期', era:'現代', type:'小說改編', genre:'都市', cv:'黑芝燒、蘇流西', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'領導力', year:'2025', ep:'全一期', era:'現代', type:'小說改編', genre:'ABO', cv:'陳怡帆、乘之', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'月光照不到', year:'2025', ep:'全一期', era:'現代', type:'小說改編', genre:'骨科', cv:'張喆、唐小喜', platform:'飯角', stars:5, memo:'', status:'完結' },
+  { title:'詛咒之家', year:'2025', ep:'全一期', era:'架空', type:'原創劇', genre:'無限流', cv:'萬舒心、喬蘇', platform:'飯角', stars:4, memo:'是遊戲還是人生的縮影，原生家庭帶來的無力，全看自己過不過的去。', status:'完結' },
+  { title:'TOGETHER', year:'2025', ep:'全一期', era:'架空', type:'原創劇', genre:'末世', cv:'亦之紫F、沈念如', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'入海', year:'2025-', ep:'連載中', era:'架空', type:'小說改編', genre:'仙、武俠', cv:'龜娘、牧野冥姬', platform:'飯角', stars:3, memo:'', status:'連載中' },
+  { title:'月亮和蟬', year:'2025-', ep:'連載中', era:'現代', type:'小說改編', genre:'娛樂圈', cv:'風鏡、傷洛', platform:'飯角', stars:4, memo:'第五期在一開頭前五分鐘就流暢的轉場以及完美的背景音，馬上有畫面感。', status:'連載中' },
+  { title:'求怎麼阻止家養上仙作死', year:'2025', ep:'全一季', era:'架空', type:'小說改編', genre:'輕鬆喜劇', cv:'風鏡、鳳凰', platform:'漫播', stars:3, memo:'', status:'完結' },
+  { title:'落音記', year:'2025–2026', ep:'共兩季', era:'古代', type:'小說改編', genre:'古代', cv:'紙巾、清鳶', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'白月光OMEGA總想擁有我', year:'2025–2026', ep:'共兩季', era:'架空', type:'小說改編', genre:'ABO', cv:'龜娘、陶典', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'禁止在雨天告白', year:'2025', ep:'全一季', era:'現代', type:'原創劇', genre:'都市', cv:'落子成玉、浮夢若薇、十四君', platform:'飯角', stars:3, memo:'這是開局還是結局，這是一場婚禮還是喪禮。', status:'完結' },
+  { title:'晴天', year:'2025', ep:'全一季', era:'現代', type:'小說改編', genre:'校園', cv:'季子櫻、閻麼麼', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'白日烏龍', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'穆雪婷、謝瑩', platform:'飯角', stars:4, memo:'新冠疫情下促成的姻緣，正劇鬧烏龍算是輕鬆歡快，而裡頭有個愛而不得黑化的角色。', status:'完結' },
+  { title:'曠野', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'職場', cv:'黑芝燒、紀川久', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'我想再次遇見你', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'光的岸面、趙小糖', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'馴服格雷斯', year:'2024', ep:'全一季', era:'架空', type:'漫畫改編', genre:'劇情', cv:'亦之紫F、雲鶴追', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'聆聽者', year:'2024', ep:'全兩期', era:'架空', type:'原創劇', genre:'末世', cv:'迦陵千葉、孑然', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'一加一', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'水母、紙巾', platform:'飯角', stars:4, memo:'有點零碎，但沉澱下來後聽這部覺得設定挺有意思的。會不小心把自己代入圖一這個角色的思想。', status:'完結' },
+  { title:'野火燒', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'校園', cv:'亦之紫F、L句號', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'晚潮', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'穿越', cv:'龜娘、穆雪婷', platform:'飯角', stars:4, memo:'太喜歡這部的鋪墊，一開始兩人互相饞身體，再來挽的孤獨晁的不自信，一期比一期好聽。', status:'完結' },
+  { title:'今日離港', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'劇情', cv:'陶典、風鏡', platform:'飯角', stars:5, memo:'', status:'完結' },
+  { title:'惹你', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'龜娘、宋艾', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'誅佞', year:'2024', ep:'全一季', era:'古代', type:'小說改編', genre:'劇情', cv:'亦之紫F、金喵兒', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'指尖', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'骨科', cv:'山也、付湘婷', platform:'飯角', stars:3, memo:'姊姊一開始很香後面變油膩了', status:'完結' },
+  { title:'和替身談戀愛', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'無限流', cv:'邱秋、張喆', platform:'飯角', stars:3, memo:'棄劇', status:'完結' },
+  { title:'難纏', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'亦之紫F、蘇流西', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'ANOTHER', year:'2023', ep:'全一季', era:'現代', type:'原創劇', genre:'都市', cv:'亦之紫F、龜娘', platform:'漫播', stars:5, memo:'小媽我真的有嗑到言薇，每個人物的動機也交代的清楚。', status:'完結' },
+  { title:'黑天鵝女友', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'職場', cv:'紀川久、傷洛', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'無人區玫瑰', year:'2024-', ep:'共兩季', era:'架空', type:'小說改編', genre:'重生', cv:'龜娘、張琦、亦之紫F', platform:'飯角', stars:3, memo:'', status:'連載中' },
+  { title:'晨昏線', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'職場', cv:'黑芝燒、十四君', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'貓鼠遊戲', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'冒險', cv:'白鴉此去、浮夢若薇', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'喂，我們閃婚吧', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'娛樂圈', cv:'黑芝燒、蘇流西', platform:'飯角', stars:5, memo:'', status:'完結' },
+  { title:'鴛鴦譜', year:'2024', ep:'全一季', era:'架空', type:'原創劇', genre:'仙、武俠', cv:'黑芝燒、落子成玉、季子櫻、蘇流西', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'姬裡機器', year:'2024', ep:'全一季', era:'架空', type:'小說改編', genre:'科幻', cv:'落子成玉、張雨濛', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'好運小狗九十九次追妻', year:'2024', ep:'全一季', era:'架空', type:'小說改編', genre:'前世今生', cv:'落子成玉、深語', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'打卦', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'前世今生', cv:'龜娘、子楚', platform:'飯角', stars:5, memo:'', status:'完結' },
+  { title:'選擇性注視', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'都市', cv:'張琦、圓滾滾、落子成玉、子楚、陶典、黑芝燒', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'未婚妻讓我想殉情', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'都市', cv:'袖子、白杺瓚', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'離開與你相遇的世界', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'科幻', cv:'水母、金喵兒', platform:'飯角', stars:5, memo:'', status:'完結' },
+  { title:'預謀戀愛', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'職場', cv:'謝瑩、張琦', platform:'漫播', stars:3, memo:'癲！太顛！誰能比這劇更顛！', status:'完結' },
+  { title:'雙鏡', year:'2024', ep:'全一季', era:'民國', type:'影視改編', genre:'懸疑推理', cv:'袖子、白杺瓚', platform:'飯角', stars:4, memo:'聽了10分多鐘的雙鏡第一期，畫面感滿滿，好有民國氛圍，立馬購買。', status:'完結' },
+  { title:'船娘', year:'2024', ep:'全一季', era:'架空', type:'小說改編', genre:'靈異鬼怪', cv:'桃吉貳、汐玥、KOKO殿、卜群', platform:'漫播', stars:5, memo:'聽了前面幾期後，好似跟劇裡的角色有一定的熟悉度了，每句話背後的動機也好、幽默也好、雙關也好，總讓人會心一笑。', status:'完結' },
+  { title:'聽神', year:'2024–2025', ep:'共兩季', era:'現代', type:'小說改編', genre:'無限流', cv:'金喵兒、水母', platform:'飯角', stars:4, memo:'第二季大幅感受到金喵兒老師配音實在比第一季來得貼合且入戲更多了。', status:'完結' },
+  { title:'她的仿造品', year:'2023', ep:'全一季', era:'現代', type:'原創劇', genre:'重生', cv:'張小豆、乘之', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'白月光她追悔莫及', year:'2024-', ep:'連載中', era:'現代', type:'小說改編', genre:'破鏡重圓', cv:'袖子、迦陵千葉', platform:'飯角', stars:2, memo:'場景太零碎、節奏感不佳，但千葉老師的林澗，好瘋好病嬌好讚。', status:'連載中' },
+  { title:'冰川漸暖', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'水母、季子櫻', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'病妻', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'重生', cv:'亦之紫F、蔡娜', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'某個鄭可心', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'校園', cv:'白鴉此去、牧野冥姬', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'莫名其妙', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'紀川久、贇珩', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'不露聲色', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'先婚後愛', cv:'白杺瓚、沈念如', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'愛的天靈靈', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'鳳城、薄涼', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'同歸', year:'2022', ep:'全一季', era:'現代', type:'小說改編', genre:'刑偵劇', cv:'張琦、林簌', platform:'飯角', stars:5, memo:'', status:'完結' },
+  { title:'予我心動', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'小甜劇', cv:'張琦、菊花花', platform:'飯角', stars:0, memo:'', status:'完結' },
+  { title:'慢熱', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'張琦、邱秋', platform:'飯角', stars:3, memo:'琦門永存，邱門永存。編劇打咩，劇組總是拿一手好牌後打爛。', status:'完結' },
+  { title:'唯一要走的路', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'女性', cv:'段藝璇、白杺瓚', platform:'飯角', stars:3, memo:'雖說設定不是那麼貼近現實，但能夠輕鬆幽默的加一點女性視角的，我還是好喜歡這部劇。', status:'完結' },
+  { title:'食局', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'劉校妤、邱秋', platform:'飯角', stars:3, memo:'喜歡句號的灼冰，喜歡四百八十寺老師筆下每個不完美的角色。', status:'完結' },
+  { title:'嘉賓', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'張琦、蘇流西', platform:'飯角', stars:3, memo:'沈重的故事，要輕輕的說。別時茫茫江浸月，聽完愛上蘇流西的聲音了。', status:'完結' },
+  { title:'怦然為你', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'校園', cv:'李詩萌、徐佳琦', platform:'飯角', stars:5, memo:'精良劇，在細節處理，CV技術表現出色，劇情青春的氣息感強烈。', status:'完結' },
+  { title:'我比你危險', year:'2023', ep:'全一季', era:'現代', type:'漫畫改編', genre:'犯罪', cv:'鐘可、蘇流西', platform:'飯角', stars:4, memo:'', status:'完結' },
+  { title:'四十九夜', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'靈異鬼怪', cv:'L句號、亦之紫F', platform:'飯角', stars:2, memo:'前面單元似乎只是提醒著你現實好慘，後面劇情太快又亂，浪費了兩個好CV戲感。', status:'完結' },
+  { title:'鍾山謠', year:'2023', ep:'全一季', era:'架空', type:'小說改編', genre:'仙、武俠', cv:'風鏡、白鴉此去', platform:'飯角', stars:4, memo:'古代偶像劇概念，騷起我的中二病。', status:'完結' },
+  { title:'都什麼年代了啊', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'女性', cv:'張喆、張琦', platform:'飯角', stars:4, memo:'年代我可以稱他為第一次彎指南，對於女性議題有著墨，尊稱為教科書。', status:'完結' },
+  { title:'涇渭無間', year:'2023', ep:'斷更', era:'架空', type:'小說改編', genre:'權謀', cv:'浩天、徐佳琦', platform:'貓耳', stars:4, memo:'第一季完結好心疼我可愛的蓁蓁公主。', status:'斷更' },
+  { title:'孤擲溫柔', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'子楚、陶典、穆雪婷、龜娘', platform:'飯角', stars:2, memo:'不懂，不懂的點應該是人物的性格。我想我只在張琦出現的時候犯花癡就好。', status:'完結' },
+  { title:'愛呢？在白雲之上', year:'2023', ep:'全一季', era:'現代', type:'原創劇', genre:'都市', cv:'黑芝燒、十四君', platform:'飯角', stars:4, memo:'節奏拿捏的恰好，留白留的完美。在音色的適配性，沒有產生所謂的CP感，但也能狠狠的get到她們的愛情。', status:'完結' },
+  { title:'全世界都知道她愛我', year:'2023–2024', ep:'共兩季', era:'現代', type:'小說改編', genre:'先婚後愛', cv:'雲鶴追、浮夢若薇', platform:'飯角', stars:4, memo:'劇本後期主役協役都在線，要劇情有劇情要瑟瑟有瑟瑟，先婚後愛真香真好吃。', status:'完結' },
+  { title:'有趣', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'小甜劇', cv:'龜娘、張琦', platform:'飯角', stars:5, memo:'如果妳生活無趣，來聽聽有趣。', status:'完結' },
+  { title:'今宵酒醒', year:'2023-', ep:'共兩季', era:'現代', type:'小說改編', genre:'都市', cv:'亦之紫F、白鴉此去', platform:'', stars:3, memo:'一樣是原著阿姨吃不下的問題，所以就沒有跟進了。', status:'完結' },
+  { title:'她的沈清', year:'2023', ep:'全一季', era:'架空', type:'漫畫改編', genre:'女性', cv:'謝子溦、邱秋', platform:'貓耳', stars:5, memo:'貓耳首部出資百合題材。關於女性議題，它有點沈重，但苦中有樂。', status:'完結' },
+  { title:'和她先婚後愛', year:'2022–2023', ep:'共兩季', era:'現代', type:'小說改編', genre:'先婚後愛', cv:'薄涼、蘇流西', platform:'飯角', stars:1, memo:'師說CP在這部劇的魔法消失了，一但沒有了魔法，什麼都像假的了。', status:'完結' },
+  { title:'放肆', year:'2022–2024', ep:'共三季', era:'現代', type:'小說改編', genre:'娛樂圈', cv:'馮駿驊、蘇婉', platform:'飯角', stars:4, memo:'失眠的夜總是適合一口氣聽完劇，類包養文學，想跨越距離又只能若即若離。', status:'完結' },
+  { title:'她也可以很溫柔', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'風鏡、蘇流西', platform:'漫播', stars:4, memo:'失憶後再重逢相戀。顧寧姿就是我心中的師奶殺手。', status:'完結' },
+  { title:'半解', year:'2023–2024', ep:'共兩季', era:'現代', type:'小說改編', genre:'職場', cv:'亦之紫F、白鴉此去', platform:'飯角', stars:5, memo:'徐輕跟徐知杳戀愛，一直給我的感覺就是好溫柔好溫暖，她們的愛情由我來守護。', status:'完結' },
+  { title:'下班來我辦公室', year:'2023', ep:'斷更', era:'現代', type:'小說改編', genre:'職場', cv:'鳳城、清鳶', platform:'飯角', stars:3, memo:'第一季在失眠的一個晚上聽完的，雖然劇情都是老套路了，但是聽起來就是舒爽順暢。', status:'斷更' },
+  { title:'MIST', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'懸疑推理', cv:'白鴉此去、雲鶴追', platform:'飯角', stars:4, memo:'無冷場精彩精彩，題材新穎。', status:'完結' },
+  { title:'老婆每天都在裝窮', year:'2023', ep:'全一季', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'亦之紫F、張琦', platform:'飯角', stars:3, memo:'主協役在線，都是搞笑人，歡脫喜劇拯救苦悶生活，可惜只有9期太短了。', status:'完結' },
+  { title:'造物的恩寵', year:'2022–2023', ep:'共兩季', era:'現代', type:'小說改編', genre:'懸疑推理', cv:'白鴉此去、傷洛', platform:'漫播', stars:3, memo:'喜歡劇情流不容錯過。齊瞳世界第一可愛。', status:'完結' },
+  { title:'狐狸在說什麼？', year:'2022', ep:'全一季', era:'現代', type:'漫畫改編', genre:'都市', cv:'邱秋、子楚、陶典', platform:'飯角', stars:3, memo:'我命定的狐狸，邱琦可以在二搭嗎，CP感好要命。', status:'完結' },
+  { title:'謝相', year:'2022–2023', ep:'共兩季', era:'古代', type:'小說改編', genre:'權謀', cv:'白杺瓚、袖子', platform:'飯角', stars:3, memo:'聽完會變謝相的小狗，白老師撐起整部劇。', status:'完結' },
+  { title:'小羊駝', year:'2022–2025', ep:'共兩季', era:'古代', type:'小說改編', genre:'穿越', cv:'段藝璇、亦之紫F', platform:'聽姬', stars:3, memo:'第一季結束卡在一個感人的地方，給我第二季～～～', status:'完結' },
+  { title:'小姐，不兇', year:'2022–2024', ep:'全兩季', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'風鏡、亦之紫F', platform:'飯角', stars:3, memo:'', status:'完結' },
+  { title:'向陽', year:'2022-', ep:'連載中', era:'現代', type:'小說改編', genre:'治癒', cv:'小小小、陶典', platform:'飯角', stars:4, memo:'喜歡落子成玉老師的新鮮聲線。重新刷了一次，可能沉澱下來後聽這部覺得設定挺有意思的。', status:'連載中' },
+  { title:'幫我拍拍', year:'2023–2024', ep:'共兩季', era:'架空', type:'小說改編', genre:'都市', cv:'楊夢露、陶典、龜娘', platform:'飯角', stars:4, memo:'難得在百廣里聽到細膩的友情，從她們相識，到她們一起生活，看到了對方的一切。', status:'完結' },
+  { title:'春夏秋冬•夏季篇：不想談戀愛', year:'2023', ep:'全一季', era:'現代', type:'原創劇', genre:'泡麵番', cv:'蘇流西、白鴉此去', platform:'漫播', stars:4, memo:'一場夏天的短暫旅行，何嘗不是場人生冒險。泡麵番的規格，推推這部劇。', status:'完結' },
+  { title:'撿到一隻貓，喵喵喵', year:'2023', ep:'全一季', era:'架空', type:'原創劇', genre:'輕鬆喜劇', cv:'水母、金喵兒', platform:'漫播', stars:2, memo:'阿寶勞贖好可愛。', status:'完結' },
+  { title:'見龍', year:'2023', ep:'斷更', era:'架空', type:'小說改編', genre:'仙、武俠', cv:'龜娘、趙爽', platform:'飯角', stars:3, memo:'未製作完。', status:'斷更' },
+  { title:'春夏秋冬•秋季篇：HE,之後呢？', year:'2023', ep:'全一季', era:'現代', type:'原創劇', genre:'泡麵番', cv:'雲鶴追、金喵兒', platform:'漫播', stars:2, memo:'', status:'完結' },
+  { title:'春夏秋冬•春季篇：掉馬備忘錄', year:'2024', ep:'全一季', era:'現代', type:'原創劇', genre:'校園', cv:'水母、圓滾滾', platform:'漫播', stars:3, memo:'', status:'完結' },
+];
+
+// 有聲書(商)
+const audiobook = [
+  { title:'穆小姐與金絲雀', year:'2019–2021', ep:'51期', era:'民國', type:'小說改編', genre:'劇情', cv:'黑芝燒、落子成玉', platform:'飯角', memo:'51期 經典：不容錯過' },
+  { title:'昏婚欲睡', year:'2019–2021', ep:'40期', era:'現代', type:'小說改編', genre:'娛樂圈', cv:'子楚、圓滾滾', platform:'飯角', memo:'40期' },
+  { title:'小女友', year:'2019–2020', ep:'35期', era:'現代', type:'小說改編', genre:'小甜劇', cv:'亦之紫F、L句號', platform:'飯角', memo:'35期' },
+  { title:'餘生為你', year:'2022–2023', ep:'連載中', era:'現代', type:'小說改編', genre:'都市', cv:'七瀨薰、清鳶', platform:'飯角、聽姬', memo:'第二季聽姬就沒上架啦／棄劇' },
+  { title:'將軍說他不娶妻', year:'2022–2024', ep:'全兩季', era:'古代', type:'小說改編', genre:'戰場', cv:'浩天、深語', platform:'飯角', memo:'' },
+  { title:'我的閨蜜果然有問題', year:'2023-', ep:'連載中', era:'現代', type:'小說改編', genre:'都市', cv:'段藝璇、王世暘', platform:'飯角', memo:'' },
+  { title:'問棺', year:'2022–2024', ep:'全兩季', era:'民國', type:'小說改編', genre:'奇幻探險', cv:'張琦、蘇流西、龜娘、周帥', platform:'飯角', memo:'沒有張琦的新飯，把之前買起來放的棺聲聽一聽，越聽越好聽。' },
+  { title:'停年', year:'2024', ep:'完結', era:'現代', type:'小說改編', genre:'破鏡重圓', cv:'鳳城、薄涼', platform:'飯角', memo:'買了沒聽完' },
+  { title:'瘋子酒', year:'2024', ep:'連載中', era:'', type:'', genre:'', cv:'', platform:'飯角', memo:'買了沒聽完' },
+  { title:'關於菸與啤酒戛然而止憂愁', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'清商、浩天', platform:'飯角', memo:'露水，祝你生根發芽' },
+  { title:'不見北冥', year:'2024', ep:'全一季', era:'現代', type:'小說改編', genre:'都市', cv:'小米、蔡娜', platform:'飯角', memo:'這是一段北漂白領和攝影師的故事，開頭魏鯤為工作爆肝的壓抑感襲來。' },
+  { title:'重生之影后這錢我賺了', year:'2025', ep:'全一季', era:'現代', type:'原創劇', genre:'娛樂圈', cv:'小米、凌煙', platform:'飯角', memo:'' },
+  { title:'逃離侯府', year:'2025', ep:'全一季', era:'古代', type:'原創劇', genre:'古代', cv:'嘉蘭月、AWU', platform:'飯角', memo:'' },
+  { title:'滬夏往事', year:'2025', ep:'共兩季', era:'民國', type:'小說改編', genre:'諜戰', cv:'穆雪婷、陳彥亦', platform:'飯角', memo:'' },
+  { title:'桃李不言', year:'2025-', ep:'共兩季', era:'現代', type:'小說改編', genre:'年齡差', cv:'龜娘、張喆', platform:'飯角', memo:'ed 不言' },
+  { title:'一覺醒來和暗戀多年的學姊戀愛了', year:'2025', ep:'全一季', era:'現代', type:'原創劇', genre:'娛樂圈', cv:'小米、飛飛', platform:'飯角', memo:'' },
+];
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+const TABS = [
+  { id:'complete', label:'網配劇（完結）', data: complete, filterKey:'era' },
+  { id:'ongoing',  label:'網配劇（連載中）', data: ongoing,  filterKey:'era' },
+  { id:'commercial', label:'商劇', data: commercial, filterKey:'era' },
+  { id:'audiobook', label:'有聲書（商）', data: audiobook, filterKey:'era' },
+];
+let curTab = 0;
+let curFilter = 'all';
+let searchQ = '';
+
+// ══════════════════════════════════════════════
+//  ERA COLORS
+// ══════════════════════════════════════════════
+const ERA_COLOR = {
+  '現代':'#1D9E75', '古代':'#BA7517', '架空':'#534AB7',
+  '民國':'#D85A30', '架空（虛構）':'#534AB7',
+};
+
+// ══════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════
+function renderTabs() {
+  const nav = document.getElementById('tabNav');
+  nav.innerHTML = TABS.map((t,i) => `
+    <button class="tab-btn ${i===curTab?'active':''}" onclick="switchTab(${i})">
+      ${t.label}<span class="tab-count">${t.data.length}</span>
+    </button>
+  `).join('');
+}
+
+function getFilters() {
+  const data = TABS[curTab].data;
+  const eras = [...new Set(data.map(d => d.era).filter(Boolean))].sort();
+  return eras;
+}
+
+function renderFilters() {
+  const eras = getFilters();
+  const row = document.getElementById('filterRow');
+  row.innerHTML = `<button class="filter-btn ${curFilter==='all'?'active':''}" onclick="setFilter('all')">全部</button>` +
+    eras.map(e => `<button class="filter-btn ${curFilter===e?'active':''}" onclick="setFilter('${e}')">${e}</button>`).join('');
+}
+
+function getFiltered() {
+  let data = TABS[curTab].data;
+  if (curFilter !== 'all') data = data.filter(d => d.era === curFilter || (curFilter==='架空' && d.era==='架空（虛構）'));
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    data = data.filter(d =>
+      d.title.toLowerCase().includes(q) ||
+      (d.cv||'').toLowerCase().includes(q) ||
+      (d.genre||'').includes(q) ||
+      (d.platform||'').includes(q)
+    );
+  }
+  return data;
+}
+
+function starsHtml(n) {
+  if (!n && n !== 0) return '';
+  return '★'.repeat(n) + '☆'.repeat(5-n);
+}
+
+function statusBadge(d) {
+  const s = d.status || '';
+  if (s === '連載中') return '<span class="status-badge status-ongoing">連載中</span>';
+  if (s === '斷更')   return '<span class="status-badge status-hiatus">斷更</span>';
+  return '';
+}
+
+function eraColor(era) {
+  return ERA_COLOR[era] || '#888';
+}
+
+function renderCards() {
+  const data = getFiltered();
+  const grid = document.getElementById('cardGrid');
+  const empty = document.getElementById('emptyMsg');
+  document.getElementById('resultCount').textContent = `共 ${data.length} 部`;
+  if (!data.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = data.map((d,i) => {
+    const era = d.era || '';
+    const platforms = (d.platform||'').split(/[、,]/).map(p=>p.trim()).filter(Boolean);
+    const imgId = `img_${curTab}_${i}`;
+    // 圖片預留位
+    const imgHtml = `
+      <img id="${imgId}" src="" alt="" style="display:none" onerror="this.style.display='none'">
+      <div class="card-placeholder">
+        <span class="mic">🎙</span>
+        <span>尚未配圖</span>
+      </div>`;
+    return `
+      <div class="card" onclick="openModal(${curTab},${TABS[curTab].data.indexOf(d)})">
+        <div class="card-img">
+          ${imgHtml}
+          ${era?`<span class="era-badge" style="background:${eraColor(era)}99">${era}</span>`:''}
+          ${statusBadge(d)}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${d.title}</div>
+          <div class="card-sub">${d.year||''}${d.ep?' · '+d.ep:''}${d.type?' · '+d.type:''}</div>
+          <div class="tag-row">
+            ${d.genre?`<span class="tag tag-genre">${d.genre}</span>`:''}
+            ${platforms.map(p=>`<span class="tag tag-platform">${p}</span>`).join('')}
+          </div>
+          ${d.stars?`<div class="stars">${starsHtml(d.stars)}</div>`:''}
+          ${d.cv?`<div class="cv-row">CV：${d.cv}</div>`:''}
+          ${d.memo
+            ? `<div class="memo-preview">${d.memo}</div>`
+            : `<div class="memo-hint">✏ 點開看詳細</div>`
+          }
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function render() {
+  renderTabs();
+  renderFilters();
+  renderCards();
+}
+
+// ══════════════════════════════════════════════
+//  ACTIONS
+// ══════════════════════════════════════════════
+function switchTab(i) { curTab=i; curFilter='all'; render(); }
+function setFilter(f) { curFilter=f; renderFilters(); renderCards(); }
+function onSearch() { searchQ=document.getElementById('searchInput').value; renderCards(); }
+
+// ── Modal ──
+function openModal(tabIdx, dataIdx) {
+  const d = TABS[tabIdx].data[dataIdx];
+  if (!d) return;
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <div class="modal-title">${d.title}</div>
+    <div class="modal-meta">${[d.year, d.ep, d.type].filter(Boolean).join(' · ')}</div>
+    ${d.stars ? `<div class="modal-stars">${starsHtml(d.stars)}</div>` : ''}
+    ${d.era ? `<div class="modal-section"><strong>時代背景</strong>${d.era}</div>` : ''}
+    ${d.genre ? `<div class="modal-section"><strong>題材</strong>${d.genre}</div>` : ''}
+    ${d.cv ? `<div class="modal-section"><strong>配音演員 CV</strong>${d.cv}</div>` : ''}
+    ${d.platform ? `<div class="modal-section"><strong>平台</strong>${d.platform}</div>` : ''}
+    ${d.memo ? `<div class="modal-memo"><strong style="display:block;font-size:11px;color:var(--text-3);letter-spacing:0.05em;margin-bottom:6px">✏ 聽劇筆記</strong>${d.memo}</div>` : ''}
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(e) { if(e.target===document.getElementById('modal')) closeModalBtn(); }
+function closeModalBtn() { document.getElementById('modal').classList.remove('open'); }
+
+// ── init ──
+render();
+</script>
+</body>
+</html>
