@@ -130,7 +130,7 @@
   }
   .card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
   .card-img {
-    width: 100%; aspect-ratio: 3/4;
+    width: 100%; aspect-ratio: 1/1;
     background: var(--gray-light);
     position: relative; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
@@ -224,7 +224,7 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <div class="site-title">🎙 <span>小六的</span>百廣聽劇清單</div>
+    <div class="site-title">🎙 小六的<span>百廣</span>聽劇清單</div>
     <div class="search-wrap">
       <span class="icon">🔍</span>
       <input type="text" id="searchInput" placeholder="搜尋劇名、CV…" oninput="onSearch()">
@@ -261,19 +261,87 @@
 
 // 網配劇(完結)
 const complete = [
-  { title:'天使經過的人生', year:'2018', ep:'上下期', era:'現代', type:'原創', genre:'寫實', cv:'L句號、雷音', platform:'B站', memo:'聽完好悵然。人物設定跟故事太真實了，看到了她們的目前勉強，感觸的是人生百態。主角也像是身邊的朋友，是目前聽過最寫實的一部劇了。' },
-  { title:'重逢', year:'2018–2022', ep:'共四期', era:'現代', type:'小說改編', genre:'虐戀', cv:'L句號、牧野冥姬、韶小韶、祈雨熙', platform:'貓耳、飯角', memo:'像是批著GL皮的BG劇，劇組給了別於原著的結局。' },
-  { title:'大山裡的日子', year:'2019–2022', ep:'上中下', era:'現代', type:'原創', genre:'鄉村縣城', cv:'季子櫻、L句號', platform:'荔枝', memo:'偏鄉議題、重逢、不解紀的刺怎沒的。' },
-  { title:'電梯林小姐', year:'2020', ep:'全一期', era:'現代', type:'小說改編', genre:'靈異鬼怪', cv:'L句號、楓刹若舞', platform:'貓耳', memo:'' },
-  { title:'玉魄', year:'2020', ep:'全一期', era:'古代', type:'小說改編', genre:'仙俠', cv:'L句號、亦之紫F', platform:'貓耳', memo:'日日在夢裡跟玉相會的故事相當有意思。感情戲那段BGM若不是鋼琴樂就更好了。' },
-  { title:'那一場柑橘味的愛戀', year:'2021', ep:'上下期', era:'架空', type:'原創', genre:'ABO', cv:'十四君、L句號', platform:'漫播、飯角', memo:'' },
+  { title:'寵愛', year:'2021–2024', ep:'共七期', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'風鏡、蘇流西', platform:'飯角、貓耳、漫播', memo:'從沒聽過後期是如此出神入化能撐起故事，他帶著你聽，像旁白般的提示你，劇情的強點、弱點，每一拍都落得恰如其分，鏡頭切換、遠近走位行雲流水，轉場也能牽動著你的情緒，還有多處場景搭建加上氣氛營造秒產生畫面，武戲也此起彼伏張力十足。特別喜歡報幕及謝幕的BGM，單拎出來聽也好聽，後期老師好手藝！牆裂推薦！' },
+  { title:'溺', year:'2023', ep:'全一期', era:'現代', type:'原創', genre:'無限流', cv:'段藝璇、聶曦映', platform:'貓耳', memo:'看特優聲忍不住想嗑他們' },
+  { title:'陽光傾瀉', year:'2023', ep:'全一期', era:'現代', type:'原創', genre:'', cv:'丁家小滿、郁楚', platform:'飯角', memo:'錯愛' },
+  { title:'飛來的瘋子', year:'2023', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'紙巾、白鴉此去', platform:'飯角', memo:'夢回藍色的鴉' },
+  { title:'蘭因絮果', year:'2023', ep:'全一期', era:'現代', type:'小說改編', genre:'', cv:'韶小韶、斯諾、晴蕁', platform:'飯角', memo:'再講沒有把握機會就溜走了，挺寫實的' },
+  { title:'山海', year:'2023', ep:'全一期', era:'現代', type:'原創', genre:'治癒', cv:'子楚、季子櫻', platform:'飯角', memo:'一段青春的故事' },
+  { title:'苦茶', year:'2022', ep:'全一期', era:'架空', type:'小說改編', genre:'', cv:'羽人圭、九白', platform:'飯角', memo:'有趣的故事、輪迴' },
+  { title:'續鈴', year:'2022', ep:'上下期', era:'架空', type:'原創', genre:'末世', cv:'入江晴人、郁望夢始、周周、猴子', platform:'貓耳', memo:'難得末世題材，可惜點在於上下期配音老師不同' },
+  { title:'畫情', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'韶小韶、浮夢若薇', platform:'飯角', memo:'總之，韶薇CP了' },
+  { title:'大山裡的日子', year:'2019–2022', ep:'上中下', era:'現代', type:'原創', genre:'鄉村縣城', cv:'季子櫻、L句號', platform:'荔枝', memo:'偏鄉議題、重逢、不解紀的刺怎沒的' },
+  { title:'絕色', year:'2019–2021', ep:'共四期', era:'現代', type:'小說改編', genre:'都市', cv:'風鏡、薄涼', platform:'荔枝、飯角', memo:'薄涼配的穆緹很出色，別於蕭阿姨，俏皮' },
+  { title:'重逢', year:'2018–2022', ep:'共四期', era:'現代', type:'小說改編', genre:'虐戀', cv:'L句號、牧野冥姬、韶小韶、祈雨熙', platform:'貓耳、飯角', memo:'像是批著GL皮的BG劇，劇組給了別於原著的結局' },
+  { title:'食色', year:'2018–2022', ep:'共五期', era:'現代', type:'小說改編', genre:'都市', cv:'湘靈、紀川久', platform:'荔枝', memo:'' },
+  { title:'眼看心勿動', year:'2018–2021', ep:'共九期', era:'現代', type:'小說改編', genre:'職場', cv:'雷音、禾少', platform:'貓耳', memo:'空降的霸道總裁（實力菜雞）和曾經是個多情種業務能力強的員工戀愛故事，有追妻火葬場。' },
+  { title:'收服冷漠N種方法', year:'2017–2021', ep:'共四期', era:'現代', type:'小說改編', genre:'都市', cv:'萋萋、凌雅寧、贇珩、韶小韶、季子樱', platform:'貓耳', memo:'5年4期、陣容強大連一句台詞或是眾人嫌的女友都是女神級CV、前面劇情根本修羅場、副cp很棒。主役可惜在第四期換成了贇珩' },
+  { title:'四禽獸與四花魁', year:'2017–2021', ep:'共七期', era:'古代', type:'小說改編', genre:'輕鬆喜劇', cv:'禎熙凰兒、凌雅寧、贇珩、季子櫻、浮夢若薇、L句號', platform:'荔枝、飯角', memo:'穿越' },
+  { title:'重生閣主有病', year:'2017–2021', ep:'共十二期', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'楓剎若舞、夏螟蟲蟲', platform:'貓耳', memo:'' },
+  { title:'吸引力', year:'2017–2020', ep:'共六期', era:'現代', type:'小說改編', genre:'虐戀', cv:'贇珩、蘇流西', platform:'貓耳、飯角、漫播', memo:'心疼我嚴烈，記憶點高' },
+  { title:'水火交融', year:'2016–2022', ep:'共五期', era:'現代', type:'小說改編', genre:'都市', cv:'亦之紫F、清鳶', platform:'貓耳、荔枝、飯角', memo:'6-7年填坑不容易，聯動《嗨，檢察官大人》' },
+  { title:'入錯新房嫁對人', year:'2016–2021', ep:'共七期', era:'古代', type:'小說改編', genre:'', cv:'凌雅寧、牧野冥姬', platform:'荔枝、飯角', memo:'' },
+  { title:'日久見人心', year:'2015–2021', ep:'共五期', era:'現代', type:'小說改編', genre:'都市', cv:'Aki、小夜光', platform:'貓耳、飯角', memo:'關於前任、會懷念小夜光的碎碎念' },
+  { title:'宮傾', year:'2014–2019', ep:'共七期', era:'古代', type:'小說改編', genre:'虐戀', cv:'雷音、浮夢若薇', platform:'B站', memo:'' },
+  { title:'師尊，我來找你麻煩了', year:'2022', ep:'全一期', era:'古代', type:'原創', genre:'仙、武俠', cv:'雷音、丁丁・Artemis', platform:'飯角、貓耳、荔枝、B站', memo:'' },
+  { title:'網配之迫害後期指南', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'蟲小師、雷音', platform:'聽姬', memo:'' },
+  { title:'一見鍾情的套路', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'天雷無妄、七瀨薰', platform:'貓耳、漫播、飯角、聽姬', memo:'甜甜 時事哏' },
+  { title:'女朋友突然變成布偶貓怎麼辦', year:'2022', ep:'全一期', era:'現代', type:'其他改編', genre:'小甜劇', cv:'清鴛、伊爾鴨', platform:'貓耳、漫播', memo:'' },
+  { title:'愛的密室之極致自我', year:'2022', ep:'上下期', era:'現代', type:'原創', genre:'科幻', cv:'97月月、蘇流西', platform:'飯角', memo:'' },
+  { title:'是你媽的愛情', year:'2022', ep:'上下期', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'穆雪婷、宋艾', platform:'飯角、貓耳、B站、youtube', memo:'喜歡穆雪婷老師的千萬不能錯過/劇本依然很有意思' },
+  { title:'當我穿越成穿書文里的原女主和現女主談戀愛', year:'2022', ep:'上下期', era:'古代', type:'原創', genre:'穿越', cv:'弒血、牧野冥姬', platform:'貓耳、B站', memo:'' },
+  { title:'槍聲', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'韶小韶、小夜光', platform:'飯角', memo:'韶韶生日劇' },
+  { title:'真假詭事', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'靈異鬼怪', cv:'風鏡、浮夢若薇、七瀨薰', platform:'貓耳', memo:'非百合，五年前(2017)的鏡子是寶藏，以不同視角講故事。' },
   { title:'向陽花木易逢春', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'靈異鬼怪', cv:'子楚、L句號', platform:'貓耳', memo:'非百合，也是有趣的故事，還有子楚哭唧唧。' },
-  { title:'靜夜思', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'雷音、沙夏、L句號', platform:'漫播', memo:'前世今生。' },
-  { title:'突然好想你', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'校園', cv:'L句號、趙小爽', platform:'飯角、聽姬', memo:'青春回憶、刀。' },
-  { title:'田丹回憶錄', year:'2022', ep:'上中下', era:'民國', type:'小說改編', genre:'虐戀', cv:'L句號、季子櫻', platform:'聽姬', memo:'BE、覺得太委屈了沒有等到正義。' },
-  { title:'跪求謝甲歸田', year:'2017', ep:'共三期', era:'古代', type:'小說改編', genre:'古代', cv:'L句號、白鴉此去', platform:'B站', memo:'' },
-  { title:'青果', year:'2016', ep:'上下期', era:'現代', type:'小說改編', genre:'骨科', cv:'雷音、蘇流西、L句號', platform:'漫播', memo:'' },
-  { title:'認識你我簡直是倒了八輩子的霉', year:'2011', ep:'共兩期', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'餘音、L句號', platform:'飯角', memo:'' },
+  { title:'臉舖', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'獵奇', cv:'季子櫻、夢辭汐', platform:'B站、貓耳', memo:'你嗑的cp汐飯雷，成了母女了/倫理教育劇' },
+  { title:'雲戀', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'靈異鬼怪', cv:'紙巾、落子成玉', platform:'飯角', memo:'' },
+  { title:'湎', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'桐語、亞炎', platform:'飯角、貓耳', memo:'心理學教授跟社會流浪悲觀者／病病的、色色的／教授的音質不太好' },
+  { title:'人生如戲', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'朔小踹、豆骨、澹台七娘', platform:'貓耳', memo:'現代女性困境，父母總是為你好，人生本來就比戲劇精彩' },
+  { title:'只是因為你是你', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'顧若卿、謝聲繁', platform:'貓耳', memo:'' },
+  { title:'靜謐的世界', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'科幻', cv:'珉愛、點點點橫', platform:'漫播', memo:'' },
+  { title:'姐姐', year:'2022', ep:'上下期', era:'現代', type:'小說改編', genre:'骨科', cv:'遂非、夜若曦', platform:'漫播、貓耳、飯角', memo:'' },
+  { title:'靜夜思', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'雷音、沙夏、L句號', platform:'漫播', memo:'前世今生' },
+  { title:'這個夏天，甜度剛好', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'小甜劇', cv:'澹台七娘、韶小韶', platform:'飯角、聽姬', memo:'助攻組也是甜甜好可愛' },
+  { title:'攻略女神', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'重生', cv:'季子櫻、趙熠彤', platform:'飯角、漫播、貓耳', memo:'有系統的小甜劇' },
+  { title:'我沒有什麼奢求，只是想要一個會說騷話的女朋友', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'子楚、宋艾', platform:'飯角、貓耳、B站、youtube', memo:'關於小嬌花，白鴉好像俞不如冰上身（欸串戲' },
+  { title:'程序故障', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'獵奇', cv:'地面、水母、圓滾滾', platform:'飯角、貓耳、B站、youtube', memo:'愛死這種題材' },
+  { title:'財主家的傻女兒', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'破鏡重圓', cv:'蘇流西、清鳶', platform:'飯角', memo:'明也撩弦系列' },
+  { title:'清新綠茶', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'都市', cv:'汀羽、清鳶', platform:'飯角', memo:'明也撩弦系列' },
+  { title:'藕斷絲連', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'都市', cv:'鳳城、祈雨熙', platform:'飯角', memo:'明也撩弦系列' },
+  { title:'請問需要服務嗎', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'都市', cv:'牧野冥姬、清鳶', platform:'飯角', memo:'明也撩弦系列' },
+  { title:'突然好想你', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'校園', cv:'L句號、趙小爽', platform:'飯角、聽姬', memo:'青春回憶、刀' },
+  { title:'應不悔', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'', cv:'澹台七娘、浮夢若薇', platform:'漫播、飯角、B站、荔枝', memo:'玻璃渣糖' },
+  { title:'鮮紅夜奔', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'寫實', cv:'浩天、清鳶', platform:'飯角', memo:'可以補文' },
+  { title:'月亮板栗', year:'2022', ep:'上下期', era:'現代', type:'小說改編', genre:'ABO', cv:'鹹魚東藏、麥茶', platform:'聽姬', memo:'' },
+  { title:'癡纏', year:'2022', ep:'全一期', era:'架空', type:'其他改編', genre:'', cv:'雷音、風鏡', platform:'聽姬、飯角', memo:'青白蛇cp同人' },
+  { title:'塵埃', year:'2022', ep:'共兩期', era:'現代', type:'原創', genre:'寫實', cv:'薄涼、阮綃緋', platform:'貓耳', memo:'性侵議題，既然是寫實尾巴還是收得超過現實了' },
+  { title:'田丹回憶錄', year:'2022', ep:'上中下', era:'民國', type:'小說改編', genre:'虐戀', cv:'L句號、季子櫻', platform:'聽姬', memo:'BE、覺得太委屈了沒有等到正義' },
+  { title:'Test B612', year:'2022', ep:'全一期', era:'架空', type:'原創', genre:'', cv:'雷音、沈三歲', platform:'無', memo:'福利劇、色到升天' },
+  { title:'私奔', year:'2022', ep:'全一期', era:'古代', type:'小說改編', genre:'', cv:'何宵、夢辭汐', platform:'飯角、漫播', memo:'以為小甜餅結果來個BE' },
+  { title:'溪緣', year:'2022', ep:'全一期', era:'古代', type:'小說改編', genre:'仙、武俠', cv:'花信、兮音', platform:'漫播', memo:'對手戲少、hE但莫名尾' },
+  { title:'花魁', year:'2022', ep:'全一期', era:'古代', type:'小說改編', genre:'', cv:'子夜歌、嚕啦嘿', platform:'飯角、漫播、貓耳', memo:'姐妹也能常相伴、相互救贖？' },
+  { title:'賀嵐矜', year:'2022', ep:'全一期', era:'現代', type:'小說改編', genre:'都市', cv:'金喵兒、毛壯壯', platform:'貓耳', memo:'猝不及防的流淚ㄌ 暗戀13年的部分還是輸給我們寶石商的聞不行、中戀補的時悅' },
+  { title:'做雞', year:'2022', ep:'上下期', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'牧野冥姬、澹臺七娘', platform:'飯角', memo:'虎狼之詞大補帖' },
+  { title:'暗渡', year:'2022', ep:'全一期', era:'民國', type:'原創', genre:'諜戰', cv:'傷洛、落子成玉', platform:'貓耳、荔枝、飯角', memo:'' },
+  { title:'撿到一隻貓', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'柒無遙、雙禾', platform:'貓耳', memo:'' },
+  { title:'謎中謎', year:'2022', ep:'全一期', era:'現代', type:'原創', genre:'犯罪', cv:'臭臭、閱川', platform:'飯角', memo:'' },
+  { title:'女巫小姐和魔法師小姐', year:'2021', ep:'全一期', era:'架空', type:'小說改編', genre:'西方玄幻', cv:'丁丁Artemis、蘇流西', platform:'貓耳、B站', memo:'好笑的。轉場銜接不太順。' },
+  { title:'彩書怨', year:'2021', ep:'全一期', era:'古代', type:'其他改編', genre:'虐戀', cv:'亦之紫F、蘇流西', platform:'貓耳', memo:'宛平CP、虐死、意難平' },
+  { title:'那一場柑橘味的愛戀', year:'2021', ep:'上下期', era:'架空', type:'原創', genre:'ABO', cv:'十四君、L句號', platform:'漫播、飯角', memo:'' },
+  { title:'她從詩裡來', year:'2021', ep:'全一期', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'子楚、江月', platform:'荔枝', memo:'不好笑不要錢' },
+  { title:'鬼怪的報恩', year:'2021', ep:'全一期', era:'現代', type:'小說改編', genre:'輕鬆喜劇', cv:'風鏡、十四君', platform:'貓耳、荔枝、飯角', memo:'一本小簿' },
+  { title:'戀愛就在今夜', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'輕鬆喜劇', cv:'子楚、圓滾滾', platform:'飯角', memo:'「內有惡犬，生人勿近」番外' },
+  { title:'無人知曉的我', year:'2021', ep:'共三期', era:'現代', type:'原創', genre:'懸疑推理', cv:'卿聲隙語', platform:'飯角', memo:'艾醬分飾兩角；「在難以入眠的深夜裡」好催眠' },
+  { title:'願者上鉤', year:'2021', ep:'共八期', era:'現代', type:'小說改編', genre:'都市', cv:'飯團嘰、楚暄歌', platform:'B站、貓耳', memo:'秦挽舒好禁慾好溫柔優雅啊啊啊' },
+  { title:'人算不如天算', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'子夜歌、鳳城', platform:'飯角', memo:'緣分就是這麼妙' },
+  { title:'憐香伴', year:'2021', ep:'全一期', era:'古代', type:'其他改編', genre:'', cv:'萋萋、雷音', platform:'貓耳', memo:'改編李漁的憐香伴' },
+  { title:'只因為我愛你', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'小媽', cv:'清鳶、雷音', platform:'飯角', memo:'' },
+  { title:'圖謀不軌', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'破鏡重圓', cv:'蘇流西、乘之', platform:'飯角', memo:'誘受94香' },
+  { title:'瑕疵', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'都市', cv:'鳳城、乘之', platform:'飯角', memo:'' },
+  { title:'橘子汽水', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'娛樂圈', cv:'紙巾、丁丁Artemis', platform:'飯角、貓耳', memo:'沙雕輕鬆' },
+  { title:'出軌', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'ABO', cv:'雷音、清鳶', platform:'飯角', memo:'狗血、鳳城很出色、開放結局' },
+  { title:'豢愛', year:'2021', ep:'全一期', era:'現代', type:'小說改編', genre:'犯罪', cv:'雷音、二萬萬(W2)', platform:'飯角', memo:'危險的題材，斯德哥爾摩？邊聽邊覺得好崩潰ㄒㄒ' },
+  { title:'墜', year:'2021', ep:'全一期', era:'現代', type:'原創', genre:'虐戀', cv:'紙巾、桐語', platform:'飯角、B站', memo:'' },
 ];
 
 // 網配劇(連載中)
